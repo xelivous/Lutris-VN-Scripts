@@ -1,0 +1,46 @@
+name: Baldr Force EXE
+game_slug: baldr-force-exe
+version: DVD
+slug: baldr-force-exe-dvd
+runner: wine
+
+script:
+  files:
+  - main_iso: "N/A:Select the installation iso"
+  env:
+    LANG: ja_JP.utf8
+  game:
+    exe: drive_c/Program Files (x86)/GIGA/Baldr Force/BaldrForce.exe
+    prefix: $GAMEDIR
+    arch: win32
+  system:
+    locale: ja_JP.utf8
+  wine:
+    dgvoodoo2: true
+    Desktop: true
+  installer:
+    - task:
+        name: winetricks
+        description: Setting windows version to WinXP
+        app: winxp
+    - task:
+        name: winetricks
+        description: Running winetricks to install japanese fonts
+        app: fakejapanese
+    - extract:
+        file: main_iso
+        dst: $GAMEDIR/drive_c/Program Files (x86)/GIGA/Baldr Force/
+        description: Copying over files from the DVD
+    - chmodx: $GAMEDIR/drive_c/Program Files (x86)/GIGA/Baldr Force/BaldrForce.exe
+    - task:
+        name: set_regedit
+        path: HKEY_CURRENT_USER\Software\GIGA\BaldrForce
+        key: DIRECTORY
+        value: 'C:\\Program Files (x86)\\GIGA\\BaldrForce\\'
+        type: REG_SZ
+    - task:
+        name: set_regedit
+        path: HKEY_CURRENT_USER\Software\GIGA\BaldrForce
+        key: INSTALL
+        value: 'FULL'
+        type: REG_SZ

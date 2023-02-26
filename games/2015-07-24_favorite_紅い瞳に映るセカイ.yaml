@@ -1,0 +1,28 @@
+name: 紅い瞳に映るセカイ
+game_slug: akai-hitomi-ni-utsuru-sekai
+version: DVD
+slug: akai-hitomi-ni-utsuru-sekai-dvd
+runner: wine
+
+script:
+  env:
+    LANG: ja_JP.utf8
+  game:
+    exe: drive_c/Program Files (x86)/FAVORITE/紅い瞳に映るセカイ/launch.exe
+    prefix: $GAMEDIR
+  system:
+    locale: ja_JP.utf8
+  installer:
+    - insert-disc:
+        requires: setup.exe
+    - task:
+        name: winetricks
+        description: Running winetricks to install japanese fonts
+        app: fakejapanese
+    - task:
+        name: wineexec
+        description: Running installer in wine in background
+        executable: $DISC/setup.exe
+        args: /s /v"/qn" #silent install
+        env:
+          LANG: ja_JP.utf8

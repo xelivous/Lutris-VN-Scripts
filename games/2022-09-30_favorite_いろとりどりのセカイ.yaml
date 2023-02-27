@@ -1,0 +1,31 @@
+name: いろとりどりのセカイ
+game_slug: irotoridori-no-sekai
+version: HD Re:Generation Download Edition
+slug: irotoridori-no-sekai-hd-regeneration-download-edition
+runner: wine
+
+script:
+  files:
+  - archive: "N/A:Select the archive containing the iroseka_HD.exe"
+  env:
+    LANG: ja_JP.utf8
+  game:
+    exe: iroseka_hd/iroseka_HD.exe
+    prefix: $GAMEDIR/prefix
+  system:
+    locale: ja_JP.utf8
+  wine:
+    Desktop: true
+  require-binaries: mv, find, dirname, chmod
+  installer:
+    - task:
+        name: winetricks
+        description: Running winetricks to install japanese fonts
+        app: fakejapanese
+    - extract:
+        file: archive
+        dst: $CACHE
+        description: Extracting the files into the cache
+    - execute:
+        command: mv $(dirname $(find $CACHE -name iroseka_HD.exe)) $GAMEDIR/iroseka_hd/ && chmod +x $GAMEDIR/iroseka_hd/iroseka_HD.exe
+        description: Moving correct file structure over from cache into final directory

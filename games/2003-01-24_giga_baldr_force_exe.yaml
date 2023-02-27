@@ -16,6 +16,8 @@ script:
   system:
     locale: ja_JP.utf8
   wine:
+    dxvk: true
+    version: lutris-fshack-7.2-x86_64
     dgvoodoo2: true
     Desktop: true
   installer:
